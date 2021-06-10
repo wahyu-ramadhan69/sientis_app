@@ -1,0 +1,127 @@
+{% extends 'admin/base/base.html' %}
+
+{% block title %} List Petugas {% endblock title %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Barang</a></li>
+                            <li class="active">List</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if messages %}
+{%for message in messages%}
+<div class="breadcrumbs">
+    <div class="alert alert-success" role="alert">
+        {{message}}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+
+{% endblock breadcrumbs %}
+
+
+
+{% block content %}
+<div class="card-body">
+<a class="btn btn-info" href="{%url "tambah_petugas"%}" role="button">Tambah Petugas</a>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="box-title">List petugas</h4>
+            </div>
+            <div class="card-body--">
+                <div class="table-stats order-table ov-h">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th class="serial">#</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Terakhir login</th>
+                                <th>Tanggal terdaftar</th>
+                                <th class="serial">#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in semua_user %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    {% if user.is_superuser == 1 %}
+                                    <span class="badge badge-complete">Admin</span>
+                                    {% else %}
+                                    <span class="badge badge-pending">Operator</span>
+                                    {% endif %}
+                                    
+                                </td>
+                                <td>{{ user.last_login }}</td>
+                                <td>{{ user.date_joined }}</td>
+                                <td>
+                                    {% if user.is_superuser == 1 %}
+                                    <a href="{% url 'ubahpass' user.id %}" button type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button></a>
+                                    {% else %}
+                                    <a href="{% url 'ubahpass' user.id %}" button type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button></a>
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cobaModal{{user.id}}"><i class="fa fa-trash"></i></button>
+
+                                    <div class="modal fade" id="cobaModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <form action="{% url 'hapus_petugas' user.id %}" method="POST">
+                                                {% csrf_token %}
+                                            <div class="modal-body">
+                                                <h5 style="text-align:center; font-size:20px;" > Apakah anda yakin ingin menghapus data ini ?</h5>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                                              <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </div>
+                                            </form>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                    
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!-- /.table-stats -->
+            </div>
+        </div> <!-- /.card -->
+    </div>  <!-- /.col-lg-8 -->
+
+    
+</div>
+{% endblock content %}
