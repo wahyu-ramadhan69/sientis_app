@@ -13,7 +13,7 @@ SECRET_KEY = 'xvm$c9h$dhkb%fb6df9n04(d7ptvpjy=^80kur*mi*^f94p@46'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','sientis.com']
+ALLOWED_HOSTS = ['127.0.0.1','https://sientis.herokuapp.com/']
 
 
 # Application definition
